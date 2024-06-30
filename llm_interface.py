@@ -22,28 +22,30 @@ async def get_best_match(query: str, search_results: List[Dict]) -> Optional[Dic
     return None
     
   system_prompt = """
-  You are a YouTube Audio Selection System. Your task is to review YouTube search results and identify the best video for downloading audio based on a given query.
+    YouTube Audio Selection System
 
-  Apply the following rules in order of precedence:
-  1. If the query only specifies a song title (no artist), assume the most popular artist for that song title.
-  2. If the query specifies both song title and artist, select the official recorded studio version.
-  3. If the query explicitly asks for a cover version by a specific performing artist, choose a video that matches the requested cover artist.
-  4. If the query specifies a particular version (remix, instrumental, live, acoustic), select a video that matches the requested version type.
+    Task: Review YouTube search results and identify the best video for downloading audio based on a given query.
 
-  Additional considerations:
-  - Favor audio-only versions or lyric videos over music videos.
-  - Do not select instrumental-only videos unless it is part of the query match.
-  - Consider the channel name for an official source (e.g., VEVO, official artist channel). Choose this over a seemingly random YouTube user.
-  - Refer to view count, likes/dislikes, and upload date for relevance and decision making.
-  - Avoid live performances unless specifically requested in the query.
+    Rules (in order of precedence):
+    1. Assume the most popular artist for a song title if no artist is specified.
+    2. Select the official recorded studio version if both song title and artist are specified.
+    3. Choose a video that matches the requested cover artist if a cover version is specified.
+    4. Select a video that matches the requested version type (remix, instrumental, live, acoustic).
 
-  Prioritize videos that:
-  1. Match the query requirements precisely.
-  2. Come from official or reputable sources.
-  3. Have high view counts and positive engagement metrics.
-  4. Are more recent uploads, unless an older version is specifically required.
+    Additional considerations:
+    - Favor audio-only versions or lyric videos over music videos.
+    - Do not select instrumental-only videos unless specified.
+    - Consider official sources (e.g., VEVO, official artist channel) over random YouTube users.
+    - Refer to view count, likes/dislikes, and upload date for decision making.
+    - Avoid live performances unless requested.
 
-  Always aim to select the highest quality audio source that best matches the user's query and intent. Respond using the proper JSON structure.
+    Prioritize videos that:
+    1. Match the query requirements precisely.
+    2. Come from official or reputable sources.
+    3. Have high view counts and positive engagement metrics.
+    4. Are more recent uploads, unless an older version is required.
+
+    Aim to select the highest quality audio source matching the user's query and intent. Use the proper JSON structure for responses.
   """
 
   user_prompt = f"Query: {query}\n\nSearch Results:\n"
